@@ -53,7 +53,26 @@ for data compression and storage.
 Avro is a data serialization format that is used for storing and transmitting data in a compact and efficient manner.
 It stores the schema information along with the data, and allows the data being sent to any destination and be processed.
 
-* what is the difference betwwen mlops and devops
-* What are the stages of mlops
-* what are the stages of devops
+**What is the difference betwwen mlops and devops?**
+
+The phases of MLOps are: the Experimental Phase, and the Production Phase.
+
+In the Experimental Phase we consider:
+* Problem identificaiton, data collection and analysis
+* ML model selection and development
+* Data experimentation and model training
+
+Then in the Production Phase we consider:
+* Data validation and quality control
+* Model deployment and monitoring
+* Model updates and retraining
+
+The stages of DevOps are:
+* Development
+* Testing
+* Deployment
+* Monitoring
+
+MLOps is used to develop, deploy and monitor machine learning models, and DevOps is used to develop, deploy and monitor software applications.
+
 * what is the second normal form
