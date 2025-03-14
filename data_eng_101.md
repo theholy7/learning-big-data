@@ -3,7 +3,7 @@
 This document will contain the questions and answers around basic data engineering concepts, that are normally asked
 during an interview process. It is a live document that will be updated in the future.
 
-# Questions in document
+# TODO: Questions in document to answer
 
 * What are techniques to ensure data quality and integrity?
 * What is ACID?
@@ -13,7 +13,9 @@ during an interview process. It is a live document that will be updated in the f
 * What is partitioning or sharding?
 * What is the difference between a Fact and a Dimension table?
 * What is the difference between a columnar and a row-oriented database?
-**What is Redis, and what are it's advantages?**
+* what is the second normal form
+
+### What is Redis, and what are it's advantages?
 
 Redis is an in-memory database that is very fast and scalable.
 It provides solutions for caching, messaging, and real-time analytics.
@@ -21,21 +23,21 @@ It provides solutions for caching, messaging, and real-time analytics.
 Redis has very high throughput, and supports atomic operations on its data types.
 Redis is single-threaded.
 
-**What is an atomic operation?**
+### What is an atomic operation?
 
 An atomic operation is an operation that is indivisible and cannot be interrupted.
 It is a single unit of work that either completes successfully or fails completely.
 
 Note to help remember: atomic like atoms - people thought they were indivisible.
 
-**What is the different levels of medallion architecture?**
+### What is the different levels of medallion architecture?
 
 Medallion architecture is a data design pattern used to logically organize data in a lakehouse.
 It incrementally and progressively improves the structure and quality of the data as it flows through each level.
 The levels are: Bronze, Silver, Gold.
 Sometimes they are called "multi-hop" architecture.
 
-**What is the difference between a primary key and a foreign key?**
+### What is the difference between a primary key and a foreign key?
 
 A primary key is a column or a set of columns that uniquely identifies each row in a table.
 It is used to enforce data integrity and ensure that each row is unique.
@@ -43,7 +45,7 @@ It is used to enforce data integrity and ensure that each row is unique.
 A foreign key is a column or a set of columns that references the primary key of another table.
 It is used to establish relationships between tables and ensure data consistency.
 
-**What is the difference between star schema and snowflake schema?**
+### What is the difference between star schema and snowflake schema?
 
 Star schema is a simple data model that consists of a central fact table and multiple dimension tables.
 Attached to the main central fact table are multiple dimension tables.
@@ -52,13 +54,13 @@ The data stored is
 Snowflake schema is a more complex data model that consists of multiple fact and dimension tables.
 There is less data repetition compared to the star schema, making it more efficient for large datasets.
 
-**What is normalization and denormalization in database design?**
+### What is normalization and denormalization in database design?
 
 Normalization is the process of organizing data according to normsl in a database.
 We have "norms" that establish the relationships between tables and data points.
 Denormalization is the process of organizing data in a database to improve query performance and reduce the number of joins - this means that some data gets duplicated.
 
-**What is the difference between avro and parquet?**
+### What is the difference between avro and parquet?
 
 Parquet is a columnar storage format, and Avro is a row-based storage format.
 
@@ -68,7 +70,7 @@ for data compression and storage.
 Avro is a data serialization format that is used for storing and transmitting data in a compact and efficient manner.
 It stores the schema information along with the data, and allows the data being sent to any destination and be processed.
 
-**What is the difference betwwen mlops and devops?**
+### What is the difference betwwen mlops and devops?
 
 The phases of MLOps are: the Experimental Phase, and the Production Phase.
 
@@ -89,5 +91,3 @@ The stages of DevOps are:
 * Monitoring
 
 MLOps is used to develop, deploy and monitor machine learning models, and DevOps is used to develop, deploy and monitor software applications.
-
-* what is the second normal form
