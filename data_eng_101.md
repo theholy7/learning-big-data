@@ -13,7 +13,19 @@ during an interview process. It is a live document that will be updated in the f
 * What is partitioning or sharding?
 * What is the difference between a Fact and a Dimension table?
 * What is the difference between a columnar and a row-oriented database?
-* What is Redis, and what are it's advantages?
+**What is Redis, and what are it's advantages?**
+
+Redis is an in-memory database that is very fast and scalable.
+It provides solutions for caching, messaging, and real-time analytics.
+
+Redis has very high throughput, and supports atomic operations on its data types.
+Redis is single-threaded.
+
+**What is an atomic operation?**
+An atomic operation is an operation that is indivisible and cannot be interrupted.
+It is a single unit of work that either completes successfully or fails completely.
+
+Note to help remember: atomic like atoms - people thought they were indivisible.
 
 **What is the different levels of medallion architecture?**
 Medallion architecture is a data design pattern used to logically organize data in a lakehouse.
