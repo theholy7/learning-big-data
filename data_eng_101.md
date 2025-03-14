@@ -22,18 +22,21 @@ Redis has very high throughput, and supports atomic operations on its data types
 Redis is single-threaded.
 
 **What is an atomic operation?**
+
 An atomic operation is an operation that is indivisible and cannot be interrupted.
 It is a single unit of work that either completes successfully or fails completely.
 
 Note to help remember: atomic like atoms - people thought they were indivisible.
 
 **What is the different levels of medallion architecture?**
+
 Medallion architecture is a data design pattern used to logically organize data in a lakehouse.
 It incrementally and progressively improves the structure and quality of the data as it flows through each level.
 The levels are: Bronze, Silver, Gold.
 Sometimes they are called "multi-hop" architecture.
 
 **What is the difference between a primary key and a foreign key?**
+
 A primary key is a column or a set of columns that uniquely identifies each row in a table.
 It is used to enforce data integrity and ensure that each row is unique.
 
