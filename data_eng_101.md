@@ -12,23 +12,27 @@ during an interview process. It is a live document that will be updated in the f
 * What is a time travel query?
 * What is partitioning or sharding?
 * What is the difference between a Fact and a Dimension table?
-* What is the difference between a columnar and a row-oriented database?
 * what is the second normal form
 
-### What is Redis, and what are it's advantages?
 
-Redis is an in-memory database that is very fast and scalable.
-It provides solutions for caching, messaging, and real-time analytics.
+### What is the difference between a columnar and a row-oriented database?
 
-Redis has very high throughput, and supports atomic operations on its data types.
-Redis is single-threaded.
+In row-oriented databases (like PostgreSQL, MySQL, SQLite):
 
-### What is an atomic operation?
+* Data is stored row by row, with all columns of a single record physically adjacent
+* Optimized for OLTP (Online Transaction Processing) workloads
+* Efficient for operations that access complete records (inserts, updates, deletes)
+* Good for point queries retrieving specific records
+* Less efficient for analytical queries that scan large portions of specific columns
 
-An atomic operation is an operation that is indivisible and cannot be interrupted.
-It is a single unit of work that either completes successfully or fails completely.
+In columnar databases (like BigQuery, Redshift, Snowflake, ClickHouse):
 
-Note to help remember: atomic like atoms - people thought they were indivisible.
+* Data is stored column by column, with all values of a single column physically adjacent
+* Optimized for OLAP (Online Analytical Processing) workloads
+* Highly efficient for aggregations and scans across specific columns
+* Better compression ratios since similar data is stored together
+* Vectorized operations can be applied to entire columns
+* Slower for record-level operations (inserts, updates)
 
 ### What is the different levels of medallion architecture?
 
