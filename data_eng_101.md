@@ -43,7 +43,16 @@ Normalization is the process of organizing data according to normsl in a databas
 We have "norms" that establish the relationships between tables and data points.
 Denormalization is the process of organizing data in a database to improve query performance and reduce the number of joins - this means that some data gets duplicated.
 
-* what is the difference between avro and parquet
+**What is the difference between avro and parquet?**
+
+Parquet is a columnar storage format, and Avro is a row-based storage format.
+
+Parquet is a big data storage format that allows for nested data structures and is very efficient
+for data compression and storage.
+
+Avro is a data serialization format that is used for storing and transmitting data in a compact and efficient manner.
+It stores the schema information along with the data, and allows the data being sent to any destination and be processed.
+
 * what is the difference betwwen mlops and devops
 * What are the stages of mlops
 * what are the stages of devops
