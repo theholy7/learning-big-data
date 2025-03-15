@@ -63,3 +63,21 @@ What is the difference between a data warehouse and a data lake?
 | **Primary Users** | Used by data scientists | Used by business analysts |
 
 Data Lakes don't replace data warehouses. They complement each other.
+
+## Data Warehouse Layers
+
+1. Data Sources
+    1. The data is in the original services, and has to be brought into the data warehouse.
+    1. The data gets extracted as is.
+1. Staging Area
+    1. The data comes into the staging area as raw data.
+    1. We leave it as untouched as possible.
+    1. There can exist a "Cleansing" layer to clean the data if it's very messy.
+1. Core Data layer
+    1. Cleaned, transformed, structured, unified data
+1. Data Mart
+    1. Data Mart is a subset of the data warehouse that is optimized for a specific business function or department.
+    1. Useful for better query performance, and to not be overwhelmed by all the tables that exist.
+    1. We can also use specialised databases for specific performance requirements.
+
+We can call the Data Warehouse all these layers combined, or just the layers where the data is accessed by the rest of the business (Core, Marts)
