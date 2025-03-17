@@ -186,3 +186,18 @@ Example: Should we give this customer a credit?
 You can have both an ODS and a Data Warehouse in your company. It can be both a parallel or a sequential approach. Services -> ODS -> Data Warehouse, or Services -> ODS, Services -> Data Warehouse.
 
 ODS' are getting more irrelevant because of better technologies and software.
+
+## Summary:
+
+* Staging
+    * Landing
+    * Minimal transformation
+    * Stage data in tables
+* Core
+    * Always present
+    * Business logic & source of truth
+    * Can be access layer
+* Mart
+    * Access layer
+    * Specific for use-cases
+    * Optimized for performance
