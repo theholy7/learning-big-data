@@ -201,3 +201,185 @@ ODS' are getting more irrelevant because of better technologies and software.
     * Access layer
     * Specific for use-cases
     * Optimized for performance
+
+
+# Dimensional Modeling
+
+It is a methods of organizing data.
+We will learn about:
+
+* Facts
+    * Something that can be measured, profit
+* Dimensions
+    * Context, like a period, like a year
+
+With these tables we can turn the measure and the context into an insight, i.e. profit per year.
+
+A Star Schema has facts in the middle and dimensions around it.
+It is a unique technique to structure data, optimized for faster data retrieval.
+Oriented around performance and usability, and designed for reporting / OLAP.
+
+## Facts Tables
+
+**Definition**
+
+* The key measurements of a company
+* Facts get aggregated and analyzed
+
+What is a fact usually?
+
+* Aggregatable (numerical values)
+    * They make sense when aggregated e.g. the total amount of sold units
+* Measureble, not descriptive
+* Event, or transactional data
+    * a sale, a profile view, etc
+* Date/Time in a fact table
+    * when the fact happened
+
+**Detailed**
+
+* Normally is:
+    * Characteristics:
+        * Primary Key
+        * Multiple Foreign Keys - reference to dimensions
+        * Fact itself
+    * Grain:
+        * most atomic level facts are defined
+        * every region, at every date, etc etc
+    * Different types of facts:
+        * Defined later on
+
+
+
+## Dimensions Tables
+
+
+**Definition**
+
+* Categorizes the facts
+* Supportive and descriptive
+* Filter, group and labeling the data
+    * Slicing and dicing
+
+Common characteristics:
+* Non-aggregatable
+* Descriptive
+* More Static normally
+
+**Detailed**
+
+* Dimension table:
+    * Characteristics:
+        * Primary Key
+        * Foreign Keys - reference to other dimensions
+        * Descriptive attributes
+    * Type
+        * People
+        * Products
+        * places
+        * times
+    * Different types of dimensions:
+        * Slowly changing dimensions
+        * Discussed later on
+
+## Schemas
+
+### Star Schema
+
+The most important schema in a data warehouse or data mart.
+The facts are in the middle, surrounded by dimensions.
+Normally a single value of the dimension has many facts that use it.
+For example, multiple sales might be of vegetable category `Root Vegetable`.
+
+In Dimensions we might have data redundancy. Values can be duplicated, for example, a dimension for `garlic` and
+`banana` might be under the category `fruits and vegetables`. This is optimized to get data out, better for read queires. Essentially, the table is **denormalized**.
+
+We sometimes might have multiple fact tables. We have to define a grain for each fact table.
+
+* Most common schema in data mart
+* Simplest form vs snowflake schema
+* Works best for specific needs
+
+### Snowflake Schema
+
+Star schema is a special case of snowflake schema.
+Snowflake schema is a more normalized version of star schema.
+We essentially get multiple levels of dimensions.
+
+Advantage:
+* Less space taken (lower storage cost)
+* Less redundant data (easier to update / maintain)
+* solves write slowdowns
+
+Disadvantage:
+* More complex to query
+* More joins required
+* Less performance for Data Mart / cubes
+
+Modelling with Star Schema is more common for both the Core DW and the Data Mart.
+
+
+## Dimensional Modeling Exercise
+
+**Question**
+
+Transform the following schema into a data warehouse schema:
+
+| **SalesTransactions** |
+|--------------------|
+| TransactionID      |
+| Date              |
+| Quantity          |
+| TransactionAmount |
+| Item ID           |
+| Item Name         |
+| Brand name        |
+| Category_name     |
+| Location ID       |
+| Country           |
+| State             |
+| City              |
+| Location_manager  |
+
+**Answer**
+
+| **Fact_Sales** |             |
+|---------------|-------------|
+| TransactionID | Primary Key |
+| DateID        | Foreign Key |
+| ItemID        | Foreign Key |
+| LocationID    | Foreign Key |
+| ManagerID     | Foreign Key |
+| Quantity      |             |
+| TransactionAmount |         |
+
+| **Dim_Date** |             |
+|--------------|-------------|
+| DateID       | Primary Key |
+| ISODate      |             |
+| DayOfWeek    |             |
+| DayOfMonth   |             |
+| Month        |             |
+| Year         |             |
+| Quarter      |             |
+| IsWeekend    |             |
+| IsHoliday    |             |
+
+| **Dim_Item** |             |
+|--------------|-------------|
+| ItemID       | Primary Key |
+| ItemName     |             |
+| BrandName    |             |
+| CategoryName |             |
+
+| **Dim_Location** |             |
+|-----------------|-------------|
+| LocationID      | Primary Key |
+| Country         |             |
+| State           |             |
+| City            |             |
+
+| **Dim_Manager** |             |
+|----------------|-------------|
+| ManagerID      | Primary Key |
+| ManagerName    |             |
