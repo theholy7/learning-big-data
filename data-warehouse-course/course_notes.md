@@ -584,3 +584,20 @@ Example:
 | 20220101| 2022-01-01   | 2022 | 1     | January   | Q1      | FY2022     | True      | True      |
 | 20220102| 2022-01-02   | 2022 | 1     | January   | Q1      | FY2022     | True      | False     |
 | 20220103| 2022-01-03   | 2022 | 1     | January   | Q1      | FY2022     | False     | False     |
+
+## Nulls
+
+* Nulls must be avoided in Foreign Keys - replace with dummy value
+    * Keep referencial integrity - make sure `nulls` don't disappear
+* Nulls can be present in facts (don't forget, read previous chapter)
+* Replace nulls in dimensions with their descriptive values, it's best for business users when it's descriptive
+    * e.g. `null` -> `No Promo` for example
+    * The value will then appear in the BI tool
+
+## Hierarchies
+
+* In source data, the data is often normalized
+* If we normalize all the data in the warehouse we end up with a snowflake schema - less practical
+    * We should avoid doing this! Less performance and lower usability
+* It's better to flatten the data
+    * We can have precalculated columns with combinations of attributes (e.g. city-state, state-country)
