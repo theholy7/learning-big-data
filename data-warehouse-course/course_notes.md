@@ -383,3 +383,90 @@ Transform the following schema into a data warehouse schema:
 |----------------|-------------|
 | ManagerID      | Primary Key |
 | ManagerName    |             |
+
+
+# Facts in depth
+
+## Additivity
+
+* Additive
+    * added across all dimentions
+    * Sum all sales across all dimensions, like category, or name, etc
+* Semi-additive
+    * added across a few
+    * Account balance, it does not make sense to add across all dimensions for example date
+        * The value at the last date is the actual value, not the sum of all previous dates
+    * However we can across all the portfolio IDs for example. Total amount for all portfolios for a date
+    * Be careful when using these facts, explore alternatives like averaging
+* Non-additive
+    * The price of a unit is not additive, it depends on the quantity
+    * We would not get a meaningful value out of summing up the prices of individual items across dimensions
+    * Prices, percentages, rations, etc are not additive
+    * If there is a ration, you could store the underlying values for example.
+      * this would give you the most analytical value out of those values
+
+## Nulls
+
+* Sometimes having nulls is not an issue. SQL handles them easily.
+* We need to pay attention to nulls vs zeroes for example
+    * Sometimes it makes sense to replace the nulls with zeroes
+* We need to really pay attention to nulls present in Foreign Keys
+    * Nulls in Foreign Keys can cause issues with joins and aggregations
+    * We can use a special value like -1 or 999 and we add a value to the dimension table
+    * This will help us not lose any data
+
+## Year-to-date facts
+
+* Often requested by business users to get reporting
+    * Revenue, profit, cost, etc
+    * They are not in the defined grain of the fact table! For example, year to date is not a value for a day!
+    * Better to store the value in the defined grain (revenue per day) and then calculate these values in the BI tool
+    * If required, optimize with a cube
+* Tempted to store them in columns in the data warehouse
+
+## Types of fact tables
+
+### Transactional fact tables
+
+* 1 row => measurement of 1 event / transaction
+* Takes place at a specific time (and place usually)
+   * A sale
+* One transaction defines the grain of the fact table
+* Most common and very flexible - can be analyzed at different levels, typically additive
+* They tend to have many foreign keys associated with them
+* They can be enormous in size, with rapid growth
+
+### Periodic Snapshot fact tables
+
+* 1 row => summarizes measures of many events / transactions
+* Summarized of standard period (day, week, month)
+* Lowest period defines the grain of the table
+* They are not as big in size because of the periouds they emcompass and aggregate, it grows continuously
+* Typically they are additive fact tables,
+* They have a lot of facts, and not so many dimensions associated with them
+* Sometimes we use null or 0 when there are no events to aggregate
+    * for example, 0 sales in the weekend, or null sales in the weekend
+
+### Accumulating fact tables
+
+* 1 row => summarizes measures of many events / transactions
+* summarized by lifespan of a process (order fullfillment)
+* Definite beginning and ending (and steps in between)
+* We can have many dates for each of the steps of a process
+    * production start, production end, inspection, shipping, delivery
+* Has some measures, but many date dimensions
+* It's the least common type of fact table
+* Good for workflow or process analysis
+
+### Summary of Fact Tables
+
+| Characteristic | Transactional | Periodic Snapshot | Accumulating |
+|---------------|---------------|-------------------|--------------|
+| Grain | Single event/transaction | Time period summary | Process lifecycle |
+| Timing | Single point in time | Regular intervals | Multiple timestamps |
+| Size | Very large | Medium | Small to medium |
+| Growth rate | Rapid | Steady | Moderate |
+| Common use case | Sales transactions | Monthly reports | Order fulfillment |
+| Dimensions | Many | Few | Many (dates) |
+| Additive | Usually | Typically | Varies |
+| Update frequency | Insert only | Regular updates | Multiple updates |
