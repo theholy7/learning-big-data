@@ -1,3 +1,37 @@
+# Table of Contents
+
+* [Data Warehousing course - Udemy](#data-warehousing-course---udemy)
+  * [Data Warehouse Layers](#data-warehouse-layers)
+    * [Why is it good to have a staging area?](#why-is-it-good-to-have-a-staging-area)
+  * [Data Marts](#data-marts)
+  * [Data warehouse technologies](#data-warehouse-technologies)
+    * [Relational databases](#relational-databases)
+    * [In-memory databases](#in-memory-databases)
+    * [OLAP Cubes](#olap-cubes)
+  * [ODS - Operational Data Storage](#ods---operational-data-storage)
+  * [Summary](#summary)
+* [Dimensional Modeling](#dimensional-modeling)
+  * [Facts Tables](#facts-tables)
+  * [Dimensions Tables](#dimensions-tables)
+  * [Schemas](#schemas)
+    * [Star Schema](#star-schema)
+    * [Snowflake Schema](#snowflake-schema)
+  * [Dimensional Modeling Exercise](#dimensional-modeling-exercise)
+* [Facts in depth](#facts-in-depth)
+  * [Additivity](#additivity)
+  * [Nulls](#nulls)
+  * [Year-to-date facts](#year-to-date-facts)
+  * [Types of fact tables](#types-of-fact-tables)
+    * [Transactional fact tables](#transactional-fact-tables)
+    * [Periodic Snapshot fact tables](#periodic-snapshot-fact-tables)
+    * [Accumulating fact tables](#accumulating-fact-tables)
+    * [Summary of Fact Tables](#summary-of-fact-tables)
+    * [Special: Factless Fact Table](#special-factless-fact-table)
+    * [Fact table design](#fact-table-design)
+    * [Natural vs surrogate keys](#natural-vs-surrogate-keys)
+* [Dimensions in depth](#dimensions-in-depth)
+
+
 # Data Warehousing course - Udemy
 
 Why do we use data warehousing? There are two sides to a business:
@@ -494,6 +528,10 @@ The 4 key decisions are based on questions and answers to business needs:
     * This is for filtering and grouping (the soul of our data warehouse)
 * What are the facts for our measurements?
 
+The highest analytical value comes from the atomic grain. Undivisible data.
+Also from the highest dimensionality.
+
+
 ### Natural vs surrogate keys
 
 * A natural key is the key that comes from the source system of data
@@ -510,3 +548,39 @@ Surrogate key benefits:
 
 **Just always use surrogate keys**, except for the date dimension, you can use `yyyymmdd` for that.
 And keep the natural keys around.
+
+# Dimensions in depth
+
+* Always has a primary key and a surrogate key
+    * We can use a lookup table to join the surrogate key into the fact table
+* Few rows, but many columns with descriptive attributes
+* They help us slice and dice the data
+
+## Date dimension
+
+* One of the most common and important dimensions
+    * We want to measure the performance over time
+* Contains all the date related features
+    * Year, month, day, week, quarter, etc
+* Meaningful surrogate key - `YYYYMMDD` or similar depending on the grain
+* Normally an extra row for `no date / null` dimension => `1900-01-01` a dummy value
+
+If the time aspect is also important, this should be a separate dimension.
+
+The date/time dimension can be populated in advance for 5 or 10 years in the future.
+
+Date features:
+
+* Both numbers and text
+* Long and abbreviated names, depending on the use case / business context
+* Combinations of attributes (2022-Q1, 2022-Q2, etc.)
+* Fiscal dates
+* Flags like `is_weekend`, `is_holiday`, `is_leap_year`, etc.
+
+Example:
+
+| DateKey | CalendarDate | Year | Month | MonthName | Quarter | FiscalYear | IsWeekend | IsHoliday |
+|---------|--------------|------|-------|-----------|---------|------------|-----------|-----------|
+| 20220101| 2022-01-01   | 2022 | 1     | January   | Q1      | FY2022     | True      | True      |
+| 20220102| 2022-01-02   | 2022 | 1     | January   | Q1      | FY2022     | True      | False     |
+| 20220103| 2022-01-03   | 2022 | 1     | January   | Q1      | FY2022     | False     | False     |
