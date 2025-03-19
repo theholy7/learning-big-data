@@ -601,3 +601,46 @@ Example:
     * We should avoid doing this! Less performance and lower usability
 * It's better to flatten the data
     * We can have precalculated columns with combinations of attributes (e.g. city-state, state-country)
+
+## Conformed Dimensions
+
+* Used for multiple fact tables or multiple stars
+* Used to compare facts acrossed a dimension. For example, the sales and costs facts are connected via the date dimension - it's called a `drill across`.
+    * We could use also `region_dimension` or `product_dimension` for example
+* We need to have identical attributes or at least a subset of attributes for both facts
+* We **do not need** the same granularity for both facts
+
+## Degenerate Dimensions
+
+* A dimension that is not really a dimension
+* All the relevant attributes of the dimension have already been extracted into other dimensions
+    * We are left only with the primary key - it might still be important to keep, even without other attributes
+    * The attribute might be useful for some business users
+* We keep the Foreign Key in the fact table, and we can use the suffix `_DD` to indicate that it's a degenerate dimension
+    * `_DD` is suggested by Kimball
+* Summarizing: It's a dimension key without an associated dimension
+    * E.g. invoice number, billing number, order ID
+
+
+## Junk Dimensions
+
+* We could eliminate this data if not relevant... But some business users might want them
+    * We could leave them in the fact table, if we don't want to create a separate dimension table
+* But if they are too big or too many, we should separate them
+    * It's best not to create 1 dimension per attribute, so we can aggregate them
+    * This is how we end up with a junk dimension
+* Flags or indicators with low cardinality (low number of different values)
+* We don't want to create different storage locations
+
+We can create a dimension with all the possible combinations of these attributes and create a primary key.
+Then we can use the foreign key in the fact table. We need to be careful with the number of combinations!
+
+If there are many combinations, extract only the combinations that occur in the fact table.
+
+**Note**: Junk dimension is called "Transactional indicator dimension" for business users. (biz speak)
+
+## Role-playing Dimensions
+
+* A dimension that is referenced in a fact table multiple times
+    * for example, a date dimension is used multiple times for different purposes
+* We can create SQL Views for a role playing dimension so that we don't duplicate data
