@@ -644,3 +644,56 @@ If there are many combinations, extract only the combinations that occur in the 
 * A dimension that is referenced in a fact table multiple times
     * for example, a date dimension is used multiple times for different purposes
 * We can create SQL Views for a role playing dimension so that we don't duplicate data
+
+## Slowly changing dimensions (SCD)
+
+They are a big imporant concept in data warehousing. Of course the dimensions change, even if they don't change
+as much as facts change. Dimensions change in the real world, so we need to have a strategy in place.
+
+1. Be proactive - ask about potential changes
+1. Aks business users + developers
+1. Create the strategy for the changing attributes
+    1. There are different types of slowly changing dimensions
+        1. Type 0: Retain Origninal - No changes in dimension, like date, "original product name"
+        1. Type 1: Overwrite - only current state is reflected, history is lost
+            * Important to take into consideration that some changes might be significant
+            * e.g. Product name is less significant than category
+            * Changes might also break SQL queries like `case when` statements
+        1. Type 2: Add new row
+        1. Type 3: Add new row and keep old row
+
+### Type 2: Add new row
+
+* The most powerful SCD
+* It perfectly partitions history of the data
+* When there is a change we add an additional row, and the new fact tables should
+use the new Foreign Key
+* To aggregate correctly the products under multiple categories we can use the `natural key`
+* We can also introduce the `effective_from` and `effective_to` columns to track the validity period of each record
+    * This lets us track accurately the changing value of the dimension
+    * Don't use null for `effective_to` use a date that is very far in the future
+    * There will be more details about this in the ETL process
+    * This approach mandates the use of the `surrogate key`
+
+Steps:
+1. Add row to dimension first
+1. Lookup in the dimension with natural key and the effective dates (we find the correct FK)
+    1. We can use an `active_flag` to make it easier to find the current version
+1. We use the FK in the fact table
+
+
+Example for category dimension table:
+
+| category_id | natural_key | category_name | active_flag | valid_from  | valid_to    |
+|------------|-------------|---------------|-------------|-------------|-------------|
+| 1          | C1          | Electronics   | N           | 2020-01-01  | 2021-12-31  |
+| 2          | C1          | Technology    | Y           | 2022-01-01  | 9999-12-31  |
+| 3          | C2          | Clothes      | Y           | 2020-01-01  | 9999-12-31  |
+
+* The category_id is the surrogate key
+* Natural_key helps us identify which rows belong to the same category
+* Valid_from and valid_to help us identify when the change happened
+* Active_flag helps us identify the current version
+* 9999-12-31 represents that the row is still valid
+
+### Mixing type 1 and type 2 dimensions
