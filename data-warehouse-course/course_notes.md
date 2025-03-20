@@ -717,3 +717,21 @@ There are some limitations:
 * Not suitable for changes that are not significant => Type 1
 
 This is the **least frequently** used SCD.
+
+
+# The ETL Process
+
+## Extract
+
+_A deeper dive into the E._
+
+We bring the data from the source systems into the staging layer of the Data Warehouse.
+Don't forget the staging layer is of a transient type - deleted after the data is processed.
+
+In the staging area we:
+* Understand the data
+* Transform the data
+
+There are 2 types of loads:
+* Initial Load - the first real run
+* Delta Load - incremental load, the subsequent runs
