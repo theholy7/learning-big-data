@@ -660,7 +660,7 @@ as much as facts change. Dimensions change in the real world, so we need to have
             * e.g. Product name is less significant than category
             * Changes might also break SQL queries like `case when` statements
         1. Type 2: Add new row
-        1. Type 3: Add new row and keep old row
+        1. Type 3: Additional Attributes
 
 ### Type 2: Add new row
 
@@ -696,4 +696,24 @@ Example for category dimension table:
 * Active_flag helps us identify the current version
 * 9999-12-31 represents that the row is still valid
 
-### Mixing type 1 and type 2 dimensions
+### Mixing type 1 and type 2 SCDs
+
+* We can mix type 1 and type 2 depending on the attribute we are looking at
+* The rules need to be defined with the business users! It's not up to the data modeler
+    * They need to know if they want to keep track of the history
+
+## Type 3: Additional Attributes
+
+* It's an in-between approach: switches back and forth between type 1 and type 2
+* Instead of adding a row, we add an additional column which contains the previous value
+* Typically used for significant changes at a time
+    * Restructuring in organizations, e.g. different regions
+* We can switch between historic / current view
+* New attributes => New rows, and the previous columns can be `Not applicable`
+* It is possible to add multiple historic columns
+
+There are some limitations:
+* Not suitable for frequent or unpredictavle changes => Type 2
+* Not suitable for changes that are not significant => Type 1
+
+This is the **least frequently** used SCD.
