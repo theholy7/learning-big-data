@@ -735,3 +735,37 @@ In the staging area we:
 There are 2 types of loads:
 * Initial Load - the first real run
 * Delta Load - incremental load, the subsequent runs
+
+The Initial Load:
+1. Extract all of the data from the source systems
+    1. After discussions with the business users and the IT teams
+    1. What data is needed, how it's structured, how it's stored
+    1. When is a good time to extract this data - initial load is the largest load
+    1. We can do smaller extracts to test how the process behaves
+1. Copy all of the data into the staging area
+1. Apply all of the transformations and load the data to the Core layer
+    1. All the data from staging gets copied, no time filtering (that's for Delta Loads)
+
+The Delta Load:
+1. Decide what the periodic extraction looks like / frequency when to load
+    1. We require a delta column for every table (timestamps)
+    1. `transaction_date`, `create_date`, `create_at`, etc
+    1. We can also use a Primary Key, but we require them to have incremental values
+1. We have to remember the `MAX(sales_key)` into a variable (or max timestamp...)
+    1. Then we only load data that is bigger than the variable
+
+There are some tools that automatically handle which data to extract, via the metadata.
+If you have that tool, use it. Otherwise you need to implement this solution.
+
+It is important to understand data volumes so that performance can be monitored and optimized.
+Don't forget that the more data we load, the longer it takes to process.
+
+## Load
+
+We use Insert/Update to load data into the Core layer. It depends on the case for each table.
+
+The common type is Insert/Append - we append data that did not exist before. Sometimes we need to update existing data, we do that based on the Primary Key we use. These are the main operations we use in the Load process.
+
+Normally we do not *delete* any data. We want to keep the history of our data.
+
+What happens if a Dimension gets deleted in a source system? We don't delete from the data warehouse. We can mark it as deleted by setting a flag or updating a status column.
