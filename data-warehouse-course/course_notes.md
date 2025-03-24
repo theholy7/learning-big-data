@@ -769,3 +769,25 @@ The common type is Insert/Append - we append data that did not exist before. Som
 Normally we do not *delete* any data. We want to keep the history of our data.
 
 What happens if a Dimension gets deleted in a source system? We don't delete from the data warehouse. We can mark it as deleted by setting a flag or updating a status column.
+
+
+## Transform
+
+Goals:
+
+1. Consolidate the data (from multiple data systems)
+1. Clean and Reshape the data (for analytical purposes)
+    1. Deduplication
+    1. Filtering (rows and columns)
+    1. Cleaning and mapping
+        * Consider null values
+    1. Value Standardization
+        * Consider the units of values
+    1. Key generation
+
+We can also have more advanced cleaning:
+
+* Joining
+* Splitting
+* Aggregating
+* Deriving new values
