@@ -791,3 +791,96 @@ We can also have more advanced cleaning:
 * Splitting
 * Aggregating
 * Deriving new values
+
+Guidelines:
+
+* What are the requirements?
+    * per day?
+* How long does it take?
+    * 5min extraction?
+* What is a good time to it?
+    * effect on product_dimension
+    * short read Access
+    * night or morning?
+
+ETL
+* Enterprise
+    * commercial
+    * mature
+    * GUI
+    * Architectural needs
+    * Support
+* Open Source
+    * Public source code
+    * Often free
+    * Support? sometimes
+    * Ease of use?
+* Cloud
+    * Cloud technology
+    * Data already in cloud?
+    * Efficiency?
+    * Flexibility?
+* Custom
+    * Own development
+    * Customized
+    * Heavy on resources
+    * Low on maturity
+    * Maintenance
+    * Training
+
+Choosing an ETL Tool:
+
+Cost, Connectors, Capabilities, Ease of use / work, Reviews, Support / Extras
+
+ETL vs ELT:
+
+ETL is not obsolete, they have different use cases.
+
+ETL:
+* More stable with defined transformations
+* More generic use-cases, when we know what the data should look like
+* Security can be handled better, only use the information that is less sensitive in the data warehouse
+
+Use-cases: Reporting (not real time), generic use cases, easy to use,
+
+ELT:
+* Requires high performance DB
+* More flexible
+* Transformations can be changed quickly
+* Easier to work real-time, the process from extracting and loading is a lot faster
+
+Use-cases: Data Science, ML, real-time analytics, Big Data (high volume)
+
+# Using your data warehouse
+
+* Basis for reporting for strategic decisions
+* Business users can analyze the Data
+* Predictive analytics
+* Use Big Data
+
+# Database indexes
+
+## B-tree indexes
+
+* multi level tree structure, breaks data into pages or blocks
+* Should be used for high cardinality (unique) columns
+    * Remember, cardinality means the number of distinct values in a column
+
+## Bitmap indexes
+
+* Particularly good for large amounts of data with low cardinality
+    * 3 different values, but many rows
+* Very efficient Storage
+* Great for read performance, and few DML operations
+    * DML operations means data manipulation language operations, such as INSERT, UPDATE, and DELETE.
+
+## Guidelines
+
+* Use to avoid full table scans on large Tables, when there is low query performance
+* Use when we want to use columns as filters
+
+* B-tree
+    * unique columns, surrogate keys, names
+* Bitmap
+    * Storage efficient
+    * Great read performance
